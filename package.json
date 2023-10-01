@@ -1,7 +1,10 @@
 {
   "name": "boboku",
-  "module": "index.ts",
+  "module": "bot.ts",
   "type": "module",
+  "scripts": {
+    "watch": "bun run dev.ts"
+  },
   "devDependencies": {
     "bun-types": "latest"
   },

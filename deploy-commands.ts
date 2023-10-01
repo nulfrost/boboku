@@ -2,7 +2,7 @@ import { REST, Routes } from "discord.js";
 import fs from "node:fs";
 import path from "node:path";
 
-const commands = [];
+const commands: any = [];
 
 const commandsPath = path.join(__dirname, "commands");
 const commandFiles = fs
@@ -23,7 +23,7 @@ for (const file of commandFiles) {
 
 const rest = new REST().setToken(process.env.DISCORD_TOKEN as string);
 
-(async () => {
+export async function reloadCommands() {
   try {
     console.log(
       `Started refreshing ${commands.length} application (/) commands.`
@@ -44,4 +44,4 @@ const rest = new REST().setToken(process.env.DISCORD_TOKEN as string);
   } catch (error) {
     console.error(error);
   }
-})();
+}
