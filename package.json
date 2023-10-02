@@ -1,18 +1,22 @@
 {
   "name": "boboku",
   "module": "bot.ts",
-  "type": "module",
+  "dependencies": {
+    "discord.js": "^14.13.0",
+    "flyff.js": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/lodash.chunk": "^4.2.7",
+    "@types/node": "^20.8.0",
+    "bun-types": "latest",
+    "lodash.chunk": "^4.2.0",
+    "typescript": "next"
+  },
+  "engines": {
+    "node": ">=17"
+  },
   "scripts": {
     "watch": "bun run dev.ts"
   },
-  "devDependencies": {
-    "bun-types": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
-  },
-  "dependencies": {
-    "discord.js": "^14.13.0",
-    "flyff.js": "^1.0.2"
-  }
+  "type": "module"
 }
