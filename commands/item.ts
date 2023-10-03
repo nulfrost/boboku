@@ -4,6 +4,7 @@ import {
   EmbedBuilder,
 } from "discord.js";
 import { ItemObject } from "flyff.js";
+import { buildGearEmbed, buildJewelryEmbed } from "../utils/index";
 export default {
   data: new SlashCommandBuilder()
     .setName("item")
@@ -14,75 +15,40 @@ export default {
   async execute(interaction: CommandInteraction) {
     const itemName = interaction.options.get("item");
     const file = Bun.file("./data/items.json");
-    const contents = await file.json();
-    const item: ItemObject = contents.find((item) =>
+    const contents: ItemObject[] = await file.json();
+    const item = contents.find((item) =>
       item.name.en
         .toLowerCase()
         .includes(itemName.value.toString().toLowerCase())
     );
 
-    const isArmor = Boolean(item.minDefense);
-    const isWeapon = Boolean(item.minAttack);
-    const timeStamp = new Intl.DateTimeFormat("en-US", {
-      dateStyle: "medium",
-    }).format(new Date());
+    console.log(item);
 
-    const embed = new EmbedBuilder()
+    let embed = new EmbedBuilder()
       .setTitle(item.name.en)
+      .setAuthor({ name: `Category: ${item.category}` })
       .setThumbnail(`https://api.flyff.com/image/item/${item.icon}`)
-      .setFields([
-        {
-          name: "Level",
-          value: String(item.level),
-          inline: true,
-        },
-        {
-          name: "Subcategory",
-          value: item.subcategory,
-          inline: true,
-        },
-        {
-          name: "Rarity",
-          value: item.rarity,
-          inline: true,
-        },
-        {
-          name: "Premium",
-          value: String(item.premium),
-          inline: true,
-        },
-
-        ...(isWeapon
-          ? [
-              {
-                name: "Min. Attack",
-                value: String(item.minAttack),
-                inline: true,
-              },
-              {
-                name: "Max. Attack",
-                value: String(item.maxAttack),
-                inline: true,
-              },
-            ]
-          : []),
-        ...(isArmor
-          ? [
-              {
-                name: "Min. Defense",
-                value: String(item.minDefense),
-                inline: true,
-              },
-              {
-                name: "Max. Defense",
-                value: String(item.maxDefense),
-                inline: true,
-              },
-            ]
-          : []),
-      ])
       .setURL(`https://flyffipedia.com/items/details/${item.id}`)
-      .setTimestamp(new Date());
+      .setTimestamp(new Date())
+      .setFooter({ text: `Item ID: ${item.id}` })
+      .setFields({
+        name: "Subcategory",
+        value: item.subcategory,
+        inline: true,
+      });
+
+    switch (item.category) {
+      case "armor":
+      case "weapon":
+      case "fashion":
+        embed.setFields(buildGearEmbed(item));
+        break;
+      case "jewelry":
+        embed.setFields(buildJewelryEmbed(item));
+        break;
+      default:
+        break;
+    }
 
     await interaction.reply({ embeds: [embed] });
   },

@@ -1,5 +1,5 @@
 import { Client, Events, GatewayIntentBits, Collection } from "discord.js";
-import fs from "node:fs";
+import fs, { watch } from "node:fs";
 import path from "node:path";
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -59,3 +59,9 @@ client.once(Events.ClientReady, (c) => {
 });
 
 client.login(process.env.DISCORD_TOKEN);
+watch(import.meta.dir, { recursive: true }, (event, filename) => {
+  console.log(`Detected ${event} in ${filename}`);
+  client.once(Events.ClientReady, (c) => {
+    console.log(`Ready! Logged in as ${c.user.tag}`);
+  });
+});
