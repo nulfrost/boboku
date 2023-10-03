@@ -69,7 +69,7 @@ export default {
             inline: true,
           },
           {
-            name: "Attributes at max Lvl",
+            name: "Attributes at max lvl",
             value: `
                      **Min. Attack:** ${skill.levels.at(-1).minAttack}\n
                      **Max. Attack:** ${skill.levels.at(-1).maxAttack}\n

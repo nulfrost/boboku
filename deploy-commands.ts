@@ -4,6 +4,15 @@ import path from "node:path";
 
 const commands: any = [];
 
+const DISCORD_TOKEN =
+  process.env.NODE_ENV === "production"
+    ? process.env.DISCORD_TOKEN_PROD
+    : process.env.DISCORD_TOKEN_DEV;
+const DISCORD_CLIENT =
+  process.env.NODE_ENV === "production"
+    ? process.env.DISCORD_CLIENT_ID_PROD
+    : process.env.DISCORD_CLIENT_ID_DEV;
+
 const commandsPath = path.join(__dirname, "commands");
 const commandFiles = fs
   .readdirSync(commandsPath)
@@ -21,7 +30,7 @@ for (const file of commandFiles) {
   }
 }
 
-const rest = new REST().setToken(process.env.DISCORD_TOKEN as string);
+const rest = new REST().setToken(DISCORD_TOKEN);
 
 export async function reloadCommands() {
   try {
@@ -29,10 +38,9 @@ export async function reloadCommands() {
       `Started refreshing ${commands.length} application (/) commands.`
     );
 
-    const data = await rest.put(
-      Routes.applicationCommands(process.env.DISCORD_CLIENT_ID as string),
-      { body: commands }
-    );
+    const data = await rest.put(Routes.applicationCommands(DISCORD_CLIENT), {
+      body: commands,
+    });
 
     console.log(
       // @ts-ignore

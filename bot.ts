@@ -1,9 +1,13 @@
 import { Client, Events, GatewayIntentBits, Collection } from "discord.js";
-import fs, { watch } from "node:fs";
+import fs from "node:fs";
 import path from "node:path";
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 (client as Record<string, any>).command = new Collection();
+const DISCORD_TOKEN =
+  process.env.NODE_ENV === "production"
+    ? process.env.DISCORD_TOKEN_PROD
+    : process.env.DISCORD_TOKEN_DEV;
 
 const commandsPath = path.join(__dirname, "commands");
 const commandFiles = fs
@@ -58,10 +62,4 @@ client.once(Events.ClientReady, (c) => {
   console.log(`Ready! Logged in as ${c.user.tag}`);
 });
 
-client.login(process.env.DISCORD_TOKEN);
-watch(import.meta.dir, { recursive: true }, (event, filename) => {
-  console.log(`Detected ${event} in ${filename}`);
-  client.once(Events.ClientReady, (c) => {
-    console.log(`Ready! Logged in as ${c.user.tag}`);
-  });
-});
+client.login(DISCORD_TOKEN);

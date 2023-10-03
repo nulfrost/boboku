@@ -16,8 +16,11 @@
     "node": ">=17"
   },
   "scripts": {
+    "postinstall": "bun deploy:prod",
     "watch": "bun run dev.ts",
-    "start": "bun bot.ts"
+    "start": "bun bot.ts",
+    "deploy:prod": "NODE_ENV=production bun deploy-commands.ts",
+    "deploy:dev": "NODE_ENV=developement bun deploy-commands.ts"
   },
   "type": "module"
 }
