@@ -16,7 +16,8 @@
     "node": ">=17"
   },
   "scripts": {
-    "watch": "bun run dev.ts"
+    "watch": "bun run dev.ts",
+    "start": "bun bot.ts"
   },
   "type": "module"
 }

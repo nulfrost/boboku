@@ -22,7 +22,6 @@ export default {
           .toLowerCase()
           .includes(skillName.value.toString().toLowerCase())
       );
-      console.log(skill);
 
       const hasRequirements = skill?.requirements?.length > 0;
       const isMonsterSkill = skill.target === "currentplayer";
