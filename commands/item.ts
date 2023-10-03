@@ -4,7 +4,11 @@ import {
   EmbedBuilder,
 } from "discord.js";
 import { ItemObject } from "flyff.js";
-import { buildGearEmbed, buildJewelryEmbed } from "../utils/index";
+import {
+  buildBuffEmbed,
+  buildGearEmbed,
+  buildJewelryEmbed,
+} from "../utils/index";
 export default {
   data: new SlashCommandBuilder()
     .setName("item")
@@ -14,42 +18,76 @@ export default {
     ),
   async execute(interaction: CommandInteraction) {
     const itemName = interaction.options.get("item");
-    const file = Bun.file("./data/items.json");
-    const contents: ItemObject[] = await file.json();
-    const item = contents.find((item) =>
-      item.name.en
-        .toLowerCase()
-        .includes(itemName.value.toString().toLowerCase())
-    );
+    try {
+      const file = Bun.file("./data/items.json");
+      const contents: ItemObject[] = await file.json();
+      const item = contents.find((item) =>
+        item.name.en
+          .toLowerCase()
+          .includes(itemName.value.toString().toLowerCase())
+      );
 
-    console.log(item);
+      let embed = new EmbedBuilder()
+        .setTitle(item.name.en)
+        .setAuthor({ name: `Category: ${item.category}` })
+        .setThumbnail(`https://api.flyff.com/image/item/${item.icon}`)
+        .setURL(`https://flyffipedia.com/items/details/${item.id}`)
+        .setTimestamp(new Date())
+        .setFooter({ text: `Item ID: ${item.id}` })
+        .addFields([
+          {
+            name: "Level",
+            value: String(item.level),
+            inline: true,
+          },
+        ]);
 
-    let embed = new EmbedBuilder()
-      .setTitle(item.name.en)
-      .setAuthor({ name: `Category: ${item.category}` })
-      .setThumbnail(`https://api.flyff.com/image/item/${item.icon}`)
-      .setURL(`https://flyffipedia.com/items/details/${item.id}`)
-      .setTimestamp(new Date())
-      .setFooter({ text: `Item ID: ${item.id}` })
-      .setFields({
-        name: "Subcategory",
-        value: item.subcategory,
-        inline: true,
-      });
+      const hasAbilities = item?.abilities?.length > 0;
 
-    switch (item.category) {
-      case "armor":
-      case "weapon":
-      case "fashion":
-        embed.setFields(buildGearEmbed(item));
-        break;
-      case "jewelry":
-        embed.setFields(buildJewelryEmbed(item));
-        break;
-      default:
-        break;
+      if (item.description.en !== "null") {
+        embed.setDescription(item.description.en);
+      }
+
+      if (item?.subcategory) {
+        embed.addFields({
+          name: "Subcategory",
+          value: item.subcategory,
+          inline: true,
+        });
+      }
+
+      switch (item.category) {
+        case "armor":
+        case "weapon":
+        case "fashion":
+          embed.addFields(buildGearEmbed(item));
+          break;
+        case "jewelry":
+          embed.addFields(buildJewelryEmbed(item));
+          break;
+        case "buff":
+          embed.addFields(buildBuffEmbed(item));
+        default:
+          break;
+      }
+
+      if (hasAbilities) {
+        embed.addFields({
+          name: "Bonuses",
+          value: `${item.abilities.map(
+            (ability) =>
+              `${ability.parameter.replace(",", "")}: ${
+                !ability.rate ? "+" : ""
+              }${ability.add}${ability.rate ? "%" : ""}\n`
+          )}`.replace(/,/g, ""),
+        });
+      }
+
+      await interaction.reply({ embeds: [embed] });
+    } catch {
+      await interaction.reply(
+        `There was an error finding: \`${itemName.value}\``
+      );
     }
-
-    await interaction.reply({ embeds: [embed] });
   },
 };

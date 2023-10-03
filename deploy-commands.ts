@@ -30,10 +30,7 @@ export async function reloadCommands() {
     );
 
     const data = await rest.put(
-      Routes.applicationGuildCommands(
-        process.env.DISCORD_CLIENT_ID as string,
-        process.env.DISCORD_GUILD_ID as string
-      ),
+      Routes.applicationCommands(process.env.DISCORD_CLIENT_ID as string),
       { body: commands }
     );
 
@@ -45,3 +42,5 @@ export async function reloadCommands() {
     console.error(error);
   }
 }
+
+reloadCommands();

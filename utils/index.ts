@@ -3,14 +3,10 @@ import { ItemObject } from "flyff.js";
 export function buildGearEmbed(item: ItemObject) {
   const isArmor = Boolean(item.minDefense);
   const isWeapon = Boolean(item.minAttack);
-  const isFashion = item.category === "fashion";
-  const hasAbilities = item.abilities.length > 0;
+  const isFashion = item?.category === "fashion";
+  const hasAbilities = item?.abilities?.length > 0;
+
   return [
-    {
-      name: "Level",
-      value: String(item.level),
-      inline: true,
-    },
     {
       name: "Rarity",
       value: item.rarity,
@@ -64,19 +60,6 @@ export function buildGearEmbed(item: ItemObject) {
           },
         ]
       : []),
-    ...(hasAbilities
-      ? [
-          {
-            name: "Abilities",
-            value: `${item.abilities.map(
-              (ability) =>
-                `${ability.parameter.replace(",", "")}: ${
-                  !ability.rate ? "+" : ""
-                }${ability.add}${ability.rate ? "%" : ""}\n`
-            )}`,
-          },
-        ]
-      : []),
   ];
 }
 
@@ -97,14 +80,19 @@ export function buildJewelryEmbed(item: ItemObject) {
       value: item.rarity,
       inline: true,
     },
+  ];
+}
+
+export function buildBuffEmbed(item: ItemObject) {
+  return [
     {
-      name: "Abilities",
-      value: `${item.abilities.map(
-        (ability) =>
-          `${ability.parameter.replace(",", "")}: ${!ability.rate ? "+" : ""}${
-            ability.add
-          }${ability.rate ? "%" : ""}\n`
-      )}`,
+      name: "Subcategory",
+      value: String(item.subcategory),
+      inline: true,
+    },
+    {
+      name: "Premium",
+      value: String(item.premium),
       inline: true,
     },
   ];
