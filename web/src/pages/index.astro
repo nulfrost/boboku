@@ -1,5 +1,6 @@
 ---
-
+import { Image } from "astro:assets"
+import localBobokuImage from "./boboku.png"
 ---
 
 <html lang="en">
@@ -8,9 +9,21 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<title>Boboku</title>
 	</head>
-	<body>
-		<h1>Astro</h1>
+	<body class="text-center bg-gray-50 max-w-7xl mx-auto px-4 xl:px-0">
+		<header class="pt-14 flex flex-col items-center mb-5">
+			<h1 class="font-bold text-4xl mb-5">Boboku</h1>
+			<Image src={localBobokuImage}
+			class="rounded-full border-2 border-gray-200 shadow-md" 
+			  alt="Boboku the weaponsmith"
+			  width={300}
+			/>
+		</header>
+		<section id="description">
+			<h2 class="font-semibold text-xl mb-2">What is Boboku?</h2>
+			<p class="mb-4">Boboku is an informational discord bot for FlyFF Universe. You can ask Boboku for information about items, monsters, drops and skills and Boboku will respond to you with the information you've requested. Development is still ongoing for this bot so there may be times where it might not be working or offline but I will do my best to make sure the issues are minimal!</p>
+			<a href="https://discord.com/oauth2/authorize?client_id=1158035184898297937&permissions=0&scope=bot%20applications.commands" class="bg-blue-500 text-white px-4 py-2 rounded-md w-max inline-block hover:bg-blue-600 duration-150 hover:underline" target="_blank" rel="noreferrer noopener">Invite Boboku to your discord server &rarr;</a>
+		</section>
 	</body>
 </html>
