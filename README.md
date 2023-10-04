@@ -20,4 +20,4 @@ Informational discord bot for FlyFF Universe, [invite Boboku to your discord ser
 
 # License
 
-[MIT](https://github.com/nulfrost/boboku/LICENSE)
+[MIT](https://github.com/nulfrost/boboku/blob/main/LICENSE)
