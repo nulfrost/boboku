@@ -3,7 +3,7 @@ import { Image } from "astro:assets"
 import localBobokuImage from "./boboku.png"
 ---
 
-<html lang="en">
+<html lang="en" class="h-full">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -11,7 +11,7 @@ import localBobokuImage from "./boboku.png"
 		<meta name="generator" content={Astro.generator} />
 		<title>Boboku</title>
 	</head>
-	<body class="text-center bg-gray-50 max-w-7xl mx-auto px-4 xl:px-0">
+	<body class="text-center bg-gray-50 max-w-7xl mx-auto px-4 xl:px-0 flex flex-col h-full">
 		<header class="pt-14 flex flex-col items-center mb-5">
 			<h1 class="font-bold text-4xl mb-5">Boboku</h1>
 			<Image src={localBobokuImage}
@@ -25,5 +25,9 @@ import localBobokuImage from "./boboku.png"
 			<p class="mb-4">Boboku is an informational discord bot for FlyFF Universe. You can ask Boboku for information about items, monsters, drops and skills and Boboku will respond to you with the information you've requested. Development is still ongoing for this bot so there may be times where it might not be working or offline but I will do my best to make sure the issues are minimal!</p>
 			<a href="https://discord.com/oauth2/authorize?client_id=1158035184898297937&permissions=0&scope=bot%20applications.commands" class="bg-blue-500 text-white px-4 py-2 rounded-md w-max inline-block hover:bg-blue-600 duration-150 hover:underline" target="_blank" rel="noreferrer noopener">Invite Boboku to your discord server &rarr;</a>
 		</main>
+		<footer class="text-sm text-gray-500 mt-auto pb-4">
+			<p>The information that Boboku uses is from the <a href="https://api.flyff.com/" class="text-blue-500 hover:underline font-bold" target="_blank" rel="noopener noreferrer">FlyFF Universe API.</a> If there are any issues please contact @Danex2 on discord.</p>
+			<p>Copyright 2023 © Gala Lab Corp. All Rights Reserved.</p>
+		</footer>
 	</body>
 </html>
