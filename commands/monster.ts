@@ -3,7 +3,7 @@ import {
   CommandInteraction,
   EmbedBuilder,
 } from "discord.js";
-import { ItemObject, MonsterObject } from "flyff.js";
+import { MonsterObject } from "flyff.js";
 export default {
   data: new SlashCommandBuilder()
     .setName("monster")
