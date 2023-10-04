@@ -5,6 +5,7 @@ import {
 } from "discord.js";
 import { ItemObject, MonsterObject } from "flyff.js";
 export default {
+  cooldown: 5,
   data: new SlashCommandBuilder()
     .setName("drops")
     .setDescription("Find out which monsters drop an item")

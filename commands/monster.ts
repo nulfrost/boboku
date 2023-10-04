@@ -5,6 +5,7 @@ import {
 } from "discord.js";
 import { MonsterObject } from "flyff.js";
 export default {
+  cooldown: 5,
   data: new SlashCommandBuilder()
     .setName("monster")
     .setDescription("Get details about a monster in FlyFF Universe")

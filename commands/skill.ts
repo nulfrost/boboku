@@ -6,6 +6,7 @@ import {
 import { SkillObject } from "flyff.js";
 
 export default {
+  cooldown: 5,
   data: new SlashCommandBuilder()
     .setName("skill")
     .setDescription("Get info about a skill in FlyFF Universe")

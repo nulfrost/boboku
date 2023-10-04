@@ -10,6 +10,7 @@ import {
   buildJewelryEmbed,
 } from "../utils/index";
 export default {
+  cooldown: 5,
   data: new SlashCommandBuilder()
     .setName("item")
     .setDescription("Get details about an item in FlyFF Universe")
