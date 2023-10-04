@@ -29,7 +29,8 @@ for (const file of commandFiles) {
   }
 }
 
-client.cooldowns = new Collection();
+// @ts-ignore
+client.cooldowns = new Collection<string, number>();
 
 client.on(Events.InteractionCreate, async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
@@ -41,15 +42,15 @@ client.on(Events.InteractionCreate, async (interaction) => {
     console.error(`No command matching ${interaction.commandName} was found.`);
     return;
   }
-
-  const { cooldowns } = client;
-
-  if (!cooldowns.has(command.data.name)) {
-    cooldowns.set(command.data.name, new Collection());
+  // @ts-ignore
+  if (!client.cooldowns.has(command.data.name)) {
+    // @ts-ignore
+    client.cooldowns.set(command.data.name, new Collection());
   }
 
   const now = Date.now();
-  const timestamps = cooldowns.get(command.data.name);
+  // @ts-ignore
+  const timestamps = client.cooldowns.get(command.data.name);
   const defaultCooldownDuration = 3;
   const cooldownAmount = (command.cooldown ?? defaultCooldownDuration) * 1000;
 
@@ -58,10 +59,11 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
     if (now < expirationTime) {
       const expiredTimestamp = Math.round(expirationTime / 1000);
-      return interaction.reply({
+      await interaction.reply({
         content: `Please wait, you are on a cooldown for \`${command.data.name}\`. You can use it again <t:${expiredTimestamp}:R>.`,
         ephemeral: true,
       });
+      return;
     }
   }
 
@@ -87,6 +89,14 @@ client.on(Events.InteractionCreate, async (interaction) => {
 });
 
 client.once(Events.ClientReady, (c) => {
+  client.user.setPresence({
+    status: "dnd",
+    activities: [
+      {
+        name: `Helping ${client.guilds.cache.size} guilds prepare for Asmodan!`,
+      },
+    ],
+  });
   console.log(`Ready! Logged in as ${c.user.tag}`);
 });
 
