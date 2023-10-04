@@ -22,8 +22,6 @@ export default {
           .includes(monsterName.value.toString().toLowerCase())
       );
 
-      console.log(monster);
-
       let embed = new EmbedBuilder()
         .setTitle(monster.name.en)
         .setThumbnail(`https://api.flyff.com/image/monster/${monster.icon}`)
