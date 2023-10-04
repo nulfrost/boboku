@@ -32,7 +32,7 @@ export default {
         .setThumbnail(`https://api.flyff.com/image/skill/old/${skill.icon}`)
         .setURL(`https://flyffipedia.com/skills/details/${skill.id}`)
         .setTimestamp(new Date())
-        .setFooter({ text: `Item ID: ${skill.id}` })
+        .setFooter({ text: `Skill ID: ${skill.id}` })
         .setDescription(skill.description.en)
         .addFields([
           {

@@ -45,7 +45,6 @@ export default {
         .setThumbnail(`https://api.flyff.com/image/item/${item.icon}`)
         .setURL(`https://flyffipedia.com/items/details/${item.id}`)
         .setTimestamp(new Date())
-        .setFooter({ text: `Item ID: ${item.id}` })
         .addFields([
           {
             name: `Monsters that drop ${item.name.en}`,
