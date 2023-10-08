@@ -1,31 +1,44 @@
----
-import { Image } from "astro:assets"
-import localBobokuImage from "./boboku.png"
----
-
 <html lang="en" class="h-full">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Boboku</title>
+		<meta property="og:title" content="Boboku - Your FlyFF Universe companion">
+		<meta property="og:description" content="Boboku is a discord bot that gives players information about FlyFF Universe" />
+		<meta property="og:url" content="https://boboku.lol/">
+		<meta property="description" content="Boboku is a discord bot that gives players information about FlyFF Universe" />
+		<meta property="twitter:title" content="Boboku - Your FlyFF Universe companion">
+		<meta property="twitter:card" content="summary_large_image">
+		<meta property="twitter:description" content="Boboku is a discord bot that gives players information about FlyFF Universe">
+		<title>Boboku - Your FlyFF Universe Companion</title>
 	</head>
-	<body class="text-center bg-gray-50 max-w-7xl mx-auto px-4 xl:px-0 flex flex-col h-full">
-		<header class="pt-14 flex flex-col items-center mb-5">
-			<h1 class="font-bold text-4xl mb-5">Boboku</h1>
-			<Image src={localBobokuImage}
-			class="rounded-full border-2 border-gray-200 shadow-md" 
-			  alt="Boboku the weaponsmith"
-			  width={300}
-			/>
+	<body class="bg-gray-50 flex flex-col h-full">
+		<header class="border-b border-gray-200 shadow-sm mb-5 xl:mb-10">
+			<nav class="flex items-baseline gap-2 max-w-7xl mx-auto py-4 px-2 xl:px-0">
+				<a href="/" class="font-bold text-lg">Boboku</a>
+				&middot;
+				<ul>
+					<li>
+						<a href="/commands" class="hover:underline">commands</a>
+					</li>
+				</ul>
+			</nav>
 		</header>
-		<main>
-			<h2 class="font-semibold text-xl mb-2">What is Boboku?</h2>
-			<p class="mb-4">Boboku is an informational discord bot for FlyFF Universe. You can ask Boboku for information about items, monsters, drops and skills and Boboku will respond to you with the information you've requested. Development is still ongoing for this bot so there may be times where it might not be working or offline but I will do my best to make sure the issues are minimal!</p>
-			<a href="https://discord.com/oauth2/authorize?client_id=1158035184898297937&permissions=0&scope=bot%20applications.commands" class="bg-blue-500 text-white px-4 py-2 rounded-md w-max inline-block hover:bg-blue-600 duration-150 hover:underline" target="_blank" rel="noreferrer noopener">Invite Boboku to your discord server &rarr;</a>
+		<main class="max-w-7xl mx-auto px-2 xl:px-0 mb-4 xl:mb-0">
+			<section id="into" class="flex items-center gap-4 mb-10">
+				<div>
+					<h1 class="font-bold text-2xl xl:text-5xl">Boboku</h1>
+					<p class="text-gray-500 xl:text-lg">Your FlyFF Universe companion</p>
+				</div>
+			</section>
+			<section id="info">
+				<h2 class="font-semibold text-lg mb-1 xl:text-xl">What is Boboku?</h2>
+				<p class="mb-4 text-gray-500 text-sm xl:text-lg">Boboku is an informational discord bot for FlyFF Universe. You can ask Boboku for information about items, monsters, drops and skills and Boboku will respond to you with the information you've requested. Development is still ongoing for this bot so there may be times where it might not be working or offline but I will do my best to make sure the issues are minimal!</p>
+				<a href="https://discord.com/oauth2/authorize?client_id=1158035184898297937&permissions=0&scope=bot%20applications.commands" class="bg-blue-500 text-white px-4 py-2 rounded-md w-max inline-block hover:bg-blue-600 duration-150 hover:underline" target="_blank" rel="noreferrer noopener">Add Boboku &rarr;</a>
+			</section>
 		</main>
-		<footer class="text-sm text-gray-500 mt-auto pb-4">
+		<footer class="text-sm text-gray-500 mt-auto pb-4 px-2 xl:text-center xl:px-0">
 			<p>The information that Boboku uses is from the <a href="https://api.flyff.com/" class="text-blue-500 hover:underline font-bold" target="_blank" rel="noopener noreferrer">FlyFF Universe API.</a> If there are any issues please contact @Danex2 on discord.</p>
 			<p>Copyright 2023 © Gala Lab Corp. All Rights Reserved.</p>
 		</footer>
