@@ -4,32 +4,62 @@ const commands = [
   { 
     name: '/item [item name]',
     description: 'Get information about an item that exists in FlyFF Universe', 
-    demo: videos[1].default ,
+    demo: videos[1].default,
   },
   { 
     name: '/skill [skill name]',
     description: 'Get information about a skill that exists in FlyFF Universe', 
-    demo: videos[3].default ,
+    demo: videos[3].default,
   },
   { 
     name: '/drops [item name]',
     description: 'Find out which monsters drop a certain item', 
-    demo: videos[0].default ,
+    demo: videos[0].default,
+    shouldLazyLoad: true,
   },
   { 
     name: '/monster [monster name]',
     description: 'Get information about a monster and its stats', 
-    demo: videos[2].default ,
+    demo: videos[2].default,
+    shouldLazyLoad: true,
   },
 ]
-
 ---
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+  let lazyVideos = [].slice.call(document.querySelectorAll("video.lazy"));
+
+  if ("IntersectionObserver" in window) {
+    var lazyVideoObserver = new IntersectionObserver(function(entries, _) {
+      entries.forEach(function(video) {
+        if (video.isIntersecting) {
+          for (let source in video.target.children) {
+            let videoSource = video.target.children[source] as HTMLSourceElement
+            if (typeof videoSource.tagName === "string" && videoSource.tagName === "SOURCE" && videoSource.dataset.src) {
+              videoSource.src = videoSource.dataset.src
+            }
+          }
+          // @ts-ignore 
+          video.target.load();
+          video.target.classList.remove("lazy");
+          lazyVideoObserver.unobserve(video.target);
+        }
+      });
+    });
+
+    lazyVideos.forEach(function(lazyVideo) {
+      lazyVideoObserver.observe(lazyVideo);
+    });
+  }
+});
+</script>
 
 <html lang="en" class="h-full">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
 		<meta property="og:title" content="Boboku - Commands">
 		<meta property="og:description" content="Boboku is a discord bot that gives players information about FlyFF Universe" />
@@ -41,7 +71,7 @@ const commands = [
 		<title>Boboku - Commands</title>
    </head>
 	<body class="bg-gray-50 flex flex-col h-full">
-		<header class="border-b border-gray-200 shadow-sm mb-10">
+		<header class="border-b border-gray-200 shadow-sm mb-10 bg-gray-50 h-full">
 			<nav class="flex items-baseline gap-2 px-2 xl:px-20 py-4">
 				<a href="/" class="font-bold text-lg">Boboku</a>
 				&middot;
@@ -60,8 +90,8 @@ const commands = [
                     <div class="mb-10">
                         <h2 class="font-semibold xl:text-lg">{command.name}</h2>
                         <p class="text-gray-500 mb-2 text-sm">{command.description}</p>
-                        <video autoplay loop muted class="w-[700px] border border-gray-300 rounded-md">
-                            <source src={command.demo} type="video/webm"/>
+                        <video autoplay loop muted playsinline class={`w-[700px] border border-gray-300 rounded-md ${command.shouldLazyLoad ? "lazy" : ""}`}>
+                            {command.shouldLazyLoad ? <source data-src={command.demo} type="video/webm"/> : <source src={command.demo} type="video/webm"/>}
                         </video>
                     </div>
                 ))}
