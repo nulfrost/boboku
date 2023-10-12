@@ -9,23 +9,24 @@ import {
   buildGearEmbed,
   buildJewelryEmbed,
 } from "../utils/index";
+
 export default {
   cooldown: 5,
   data: new SlashCommandBuilder()
     .setName("item")
     .setDescription("Get details about an item in FlyFF Universe")
     .addStringOption((option) =>
-      option.setName("item").setDescription("Item name").setRequired(true)
+      option.setName("item").setDescription("Item name").setRequired(true),
     ),
   async execute(interaction: CommandInteraction) {
     const itemName = interaction.options.get("item");
     try {
       const file = Bun.file("./data/items.json");
       const contents: ItemObject[] = await file.json();
-      const item = contents.find((item) =>
-        item.name.en
-          .toLowerCase()
-          .includes(itemName.value.toString().toLowerCase())
+      const item = contents.find(
+        (item) =>
+          item.name.en.toLowerCase() ===
+          itemName.value.toString().toLowerCase(),
       );
 
       let embed = new EmbedBuilder()
@@ -79,7 +80,7 @@ export default {
             (ability) =>
               `${ability.parameter.replace(",", "")}: ${
                 !ability.rate ? "+" : ""
-              }${ability.add}${ability.rate ? "%" : ""}\n`
+              }${ability.add}${ability.rate ? "%" : ""}\n`,
           )}`.replace(/,/g, ""),
         });
       }
@@ -87,7 +88,7 @@ export default {
       await interaction.reply({ embeds: [embed] });
     } catch {
       await interaction.reply(
-        `There was an error finding: \`${itemName.value}\``
+        `There was an error finding: \`${itemName.value}\``,
       );
     }
   },

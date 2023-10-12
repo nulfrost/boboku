@@ -4,23 +4,27 @@ import {
   EmbedBuilder,
 } from "discord.js";
 import { MonsterObject } from "flyff.js";
+
 export default {
   cooldown: 5,
   data: new SlashCommandBuilder()
     .setName("monster")
     .setDescription("Get details about a monster in FlyFF Universe")
     .addStringOption((option) =>
-      option.setName("monster").setDescription("Monster name").setRequired(true)
+      option
+        .setName("monster")
+        .setDescription("Monster name")
+        .setRequired(true),
     ),
   async execute(interaction: CommandInteraction) {
     const monsterName = interaction.options.get("monster");
     try {
       const monsterFile = Bun.file("./data/monsters.json");
       const monsterContents: MonsterObject[] = await monsterFile.json();
-      const monster = monsterContents.find((monster) =>
-        monster.name.en
-          .toLowerCase()
-          .includes(monsterName.value.toString().toLowerCase())
+      const monster = monsterContents.find(
+        (monster) =>
+          monster.name.en.toLowerCase() ===
+          monsterName.value.toString().toLowerCase(),
       );
 
       let embed = new EmbedBuilder()
@@ -106,7 +110,7 @@ export default {
       await interaction.reply({ embeds: [embed] });
     } catch {
       await interaction.reply(
-        `There was an error finding: \`${monsterName.value}\``
+        `There was an error finding: \`${monsterName.value}\``,
       );
     }
   },

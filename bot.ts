@@ -20,11 +20,11 @@ for (const file of commandFiles) {
   if ("data" in command.default && "execute" in command.default) {
     (client as Record<string, any>)?.command?.set(
       command.default.data.name,
-      command.default
+      command.default,
     );
   } else {
     console.log(
-      `[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`
+      `[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`,
     );
   }
 }

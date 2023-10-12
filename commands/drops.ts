@@ -4,23 +4,24 @@ import {
   EmbedBuilder,
 } from "discord.js";
 import { ItemObject, MonsterObject } from "flyff.js";
+
 export default {
   cooldown: 5,
   data: new SlashCommandBuilder()
     .setName("drops")
     .setDescription("Find out which monsters drop an item")
     .addStringOption((option) =>
-      option.setName("item").setDescription("Item name").setRequired(true)
+      option.setName("item").setDescription("Item name").setRequired(true),
     ),
   async execute(interaction: CommandInteraction) {
     const itemName = interaction.options.get("item");
     try {
       const itemFile = Bun.file("./data/items.json");
       const itemContents: ItemObject[] = await itemFile.json();
-      const item = itemContents.find((item) =>
-        item.name.en
-          .toLowerCase()
-          .includes(itemName.value.toString().toLowerCase())
+      const item = itemContents.find(
+        (item) =>
+          item.name.en.toLowerCase() ===
+          itemName.value.toString().toLowerCase(),
       );
 
       const monsterFile = Bun.file("./data/monsters.json");
@@ -49,7 +50,7 @@ export default {
           {
             name: `Monsters that drop ${item.name.en}`,
             value: `${monstersThatDropItem.map(
-              (monster) => `${monster}\n`
+              (monster) => `${monster}\n`,
             )}`.replace(/,/g, ""),
             inline: true,
           },
@@ -58,7 +59,7 @@ export default {
       await interaction.reply({ embeds: [embed] });
     } catch {
       await interaction.reply(
-        `There was an error finding: \`${itemName.value}\``
+        `There was an error finding: \`${itemName.value}\``,
       );
     }
   },

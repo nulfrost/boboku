@@ -11,17 +11,17 @@ export default {
     .setName("skill")
     .setDescription("Get info about a skill in FlyFF Universe")
     .addStringOption((option) =>
-      option.setName("skill").setDescription("Skill name").setRequired(true)
+      option.setName("skill").setDescription("Skill name").setRequired(true),
     ),
   async execute(interaction: CommandInteraction) {
     const skillName = interaction.options.get("skill");
     try {
       const file = Bun.file("./data/skills.json");
       const contents: SkillObject[] = await file.json();
-      const skill = contents.find((skill) =>
-        skill?.name?.en
-          .toLowerCase()
-          .includes(skillName.value.toString().toLowerCase())
+      const skill = contents.find(
+        (skill) =>
+          skill.name.en.toLowerCase() ===
+          skillName.value.toString().toLowerCase(),
       );
 
       const hasRequirements = skill?.requirements?.length > 0;
@@ -95,14 +95,14 @@ export default {
         embed.addFields({
           name: "Required Skills",
           value: `${requiredSkills.map(
-            (s) => `${s.name} - Lvl: ${s.level}\n`
+            (s) => `${s.name} - Lvl: ${s.level}\n`,
           )}`.replace(/,/g, ""),
         });
       }
       await interaction.reply({ embeds: [embed] });
     } catch {
       await interaction.reply(
-        `There was an error finding: \`${skillName.value}\``
+        `There was an error finding: \`${skillName.value}\``,
       );
     }
   },
