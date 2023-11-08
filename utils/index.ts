@@ -4,7 +4,6 @@ export function buildGearEmbed(item: ItemObject) {
   const isArmor = Boolean(item.minDefense);
   const isWeapon = Boolean(item.minAttack);
   const isFashion = item?.category === "fashion";
-  const hasAbilities = item?.abilities?.length > 0;
 
   return [
     {
@@ -17,7 +16,6 @@ export function buildGearEmbed(item: ItemObject) {
       value: String(item.premium),
       inline: true,
     },
-
     ...(isWeapon
       ? [
           {
@@ -46,7 +44,7 @@ export function buildGearEmbed(item: ItemObject) {
           },
           {
             name: "Sex",
-            value: item.sex,
+            value: item.sex ? item.sex : "Gender does not apply to this item",
             inline: true,
           },
         ]
@@ -64,6 +62,11 @@ export function buildGearEmbed(item: ItemObject) {
 }
 
 export function buildJewelryEmbed(item: ItemObject) {
+  const hasUpgradeLevels =
+    item.upgradeLevels &&
+    item.upgradeLevels.length > 0 &&
+    item.upgradeLevels.length <= 6;
+
   return [
     {
       name: "Level",
@@ -80,6 +83,19 @@ export function buildJewelryEmbed(item: ItemObject) {
       value: item.rarity,
       inline: true,
     },
+    ...(hasUpgradeLevels
+      ? item.upgradeLevels.map((upgradeLevel) => ({
+          name: `Upgrade Level ${upgradeLevel.upgradeLevel}`,
+          value: `
+        **Required Level**: ${upgradeLevel.requiredLevel}
+        **Abilities**: ${upgradeLevel.abilities.map(
+          (ability) => `**${ability.parameter}**: ${!ability.rate ? "+" : ""}${
+            ability.add
+          }${!ability.rate ? "" : "%"}
+    `
+        )}`.replace(/,/g, ""),
+        }))
+      : []),
   ];
 }
 

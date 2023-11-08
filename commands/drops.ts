@@ -26,7 +26,7 @@ export default {
 
       const monsterFile = Bun.file("./data/monsters.json");
       const monsterContents: MonsterObject[] = await monsterFile.json();
-      let monstersThatDropItem = [];
+      let monstersThatDropItem: string[] = [];
       let monsterDropList;
 
       for (const monster of monsterContents) {

@@ -3,7 +3,7 @@ import {
   CommandInteraction,
   EmbedBuilder,
 } from "discord.js";
-import { ItemObject } from "flyff.js";
+import { ItemObject, SkillObject } from "flyff.js";
 import {
   buildBuffEmbed,
   buildGearEmbed,
@@ -16,7 +16,7 @@ export default {
     .setName("item")
     .setDescription("Get details about an item in FlyFF Universe")
     .addStringOption((option) =>
-      option.setName("item").setDescription("Item name").setRequired(true),
+      option.setName("item").setDescription("Item name").setRequired(true)
     ),
   async execute(interaction: CommandInteraction) {
     const itemName = interaction.options.get("item");
@@ -25,9 +25,25 @@ export default {
       const contents: ItemObject[] = await file.json();
       const item = contents.find(
         (item) =>
-          item.name.en.toLowerCase() ===
-          itemName.value.toString().toLowerCase(),
+          item.name.en.toLowerCase() === itemName.value.toString().toLowerCase()
       );
+
+      let skillChances;
+
+      if (item.abilities && item.abilities.length > 0) {
+        skillChances = item.abilities.filter(
+          (ability) => ability.parameter === "skillchance"
+        );
+      }
+
+      const skillFile = Bun.file("./data/skills.json");
+      const skillContents: SkillObject[] = await skillFile.json();
+      let skills;
+      if (skillChances !== undefined && skillChances.length > 0) {
+        skills = skillChances.map((skill) =>
+          skillContents.find((s) => s.id === skill.skill)
+        );
+      }
 
       let embed = new EmbedBuilder()
         .setTitle(item.name.en)
@@ -80,15 +96,36 @@ export default {
             (ability) =>
               `${ability.parameter.replace(",", "")}: ${
                 !ability.rate ? "+" : ""
-              }${ability.add}${ability.rate ? "%" : ""}\n`,
+              }${
+                ability.add && ability.addMax
+                  ? `${ability.add}${!ability.rate ? "" : "%"} to ${
+                      !ability.rate ? "+" : ""
+                    }${ability.addMax}`
+                  : `${ability.add}`
+              }${ability.rate ? "%" : ""}\n`
           )}`.replace(/,/g, ""),
         });
       }
 
+      if (skillChances && skillChances.length > 0) {
+        embed.addFields({
+          name: "Skill Chance",
+          value: `${skills.map(
+            (skill) =>
+              `**${skill?.name?.en}** - ${
+                skill.description.en === "null"
+                  ? "No skill description"
+                  : skill.description.en
+              }\n`
+          )}\n`.replace(/,/g, ""),
+        });
+      }
+
       await interaction.reply({ embeds: [embed] });
-    } catch {
+    } catch (error) {
+      console.log(error);
       await interaction.reply(
-        `There was an error finding: \`${itemName.value}\``,
+        `There was an error finding: \`${itemName.value}\``
       );
     }
   },
